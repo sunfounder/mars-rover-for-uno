@@ -160,41 +160,49 @@ Standardmäßig ist das Uno R3-Board des GalaxyRVR mit der notwendigen Firmware 
 
 .. _ap_to_sta:
 
-Wie steuert man den Rover über das Heimnetzwerk?
--------------------------------------------------
-Standardmäßig ist das Uno R3 mit einem Code vorinstalliert, der im APP-Modus konfiguriert ist. Das bedeutet, dass der GalaxyRVR einen Hotspot sendet, über den Sie Ihr Mobilgerät verbinden können, um ihn mit der SunFounder Controller APP zu steuern.
+Rover-Netzwerkkonfiguration: Heim-WLAN und AP-Modus
+--------------------------------------------------------------------------------------
 
-Wenn Sie den Rover lieber über Ihr Heimnetzwerk steuern möchten, folgen Sie diesen Schritten, um den modifizierten Code auf das Uno-Board hochzuladen:
+Standardmäßig ist der Uno R3 mit einem Code vorinstalliert, der im **AP-Modus** konfiguriert ist. Das bedeutet, dass der **GalaxyRVR** einen eigenen Hotspot sendet, sodass Sie Ihr mobiles Gerät verbinden und ihn über die **SunFounder Controller APP** steuern können.
 
-#. Laden Sie die erforderlichen Dateien über den folgenden Link herunter:
+Falls Sie den Rover lieber über Ihr Heim-WLAN steuern möchten oder den **AP-Modus zurücksetzen** müssen (z. B. bei mehreren Geräten mit demselben Netzwerknamen), folgen Sie diesen Schritten, um den modifizierten Code auf das Uno-Board hochzuladen:
+
+#. Laden Sie die erforderlichen Dateien unter folgendem Link herunter:
 
    * :download:`GalaxyRVR Codes <https://github.com/sunfounder/galaxy-rvr/archive/refs/heads/main.zip>`
 
 #. Befolgen Sie die Installationsanleitung: :ref:`install_arduino_ide`.
 
-#. Verwenden Sie den **Library Manager**, um die Bibliotheken ``SoftPWM`` und ``SunFounder AI Camera`` zu installieren. Für detaillierte Schritte siehe :ref:`install_lib`.
+#. Verwenden Sie den **Bibliotheksverwalter**, um die Bibliotheken ``SoftPWM`` und ``SunFounder AI Camera`` zu installieren. Detaillierte Schritte finden Sie unter :ref:`install_lib`.
 
 #. Navigieren Sie zum Verzeichnis ``galaxy-rvr-main\galaxy-rvr`` und öffnen Sie die Datei ``galaxy-rvr.ino``.
 
    .. image:: img/faq_galaxy_code.png
-      :width: 400
 
-#. Kommentieren Sie die Zeilen 69-71 aus, heben Sie die Kommentare der Zeilen 73-75 auf, und ersetzen Sie ``SSID`` und ``PASSWORD`` durch Ihre Heim-WLAN-Zugangsdaten.
+#. Kommentieren Sie die Zeilen 69-71 aus, entfernen Sie die Kommentarzeichen von Zeilen 73-75 und ersetzen Sie ``SSID`` sowie ``PASSWORD`` mit Ihren Heim-WLAN-Zugangsdaten.
 
-   .. image:: img/ap_sta.png
-      :align: center
+   .. code-block:: c
 
-#. Verbinden Sie den GalaxyRVR mit einem USB-Kabel mit dem Computer und schalten Sie dann den **Upload**-Schalter des Rovers auf die Upload-Seite.
+      // /** WLAN-Modus, SSID, Passwort konfigurieren */
+      // #define WIFI_MODE WIFI_MODE_AP
+      // #define SSID "GalaxyRVR"
+      // #define PASSWORD "12345678"
+
+      #define WIFI_MODE WIFI_MODE_STA
+      #define SSID "xxxxxxxxxx"
+      #define PASSWORD "xxxxxxxxxx"
+
+#. Verbinden Sie den GalaxyRVR per **USB-Kabel** mit Ihrem Computer und schalten Sie den **Upload-Schalter** des Rovers auf die Upload-Position.
 
    .. image:: img/camera_upload.png
         :width: 400
         :align: center
 
-#. Klicken Sie im Arduino IDE auf die Schaltfläche **Upload**, um den modifizierten Code auf das Uno-Board hochzuladen.
+#. Klicken Sie auf die **Upload**-Schaltfläche in der Arduino-IDE, um den modifizierten Code auf das Uno-Board hochzuladen.
 
    .. image:: img/faq_galaxy_upload.png
 
-#. Um die ESP32 CAM zu aktivieren, bewegen Sie den Modus-Schalter in die **Run**-Position und drücken Sie die **Reset**-Taste, um das R3-Board neu zu starten. Unten am Streifen sehen Sie ein cyanfarbenes Licht blinken.
+#. Um die **ESP32 CAM** zu aktivieren, stellen Sie den **Modusschalter** auf **Run** und drücken Sie den **Reset-Knopf**, um das R3-Board neu zu starten. Anschließend sehen Sie ein cyanfarbenes Licht auf dem unteren LED-Streifen blinken.
 
    .. raw:: html
    
@@ -203,26 +211,45 @@ Wenn Sie den Rover lieber über Ihr Heimnetzwerk steuern möchten, folgen Sie di
            Your browser does not support the video tag.
        </video>
 
-#. Stellen Sie sicher, dass Ihr Mobilgerät (Tablet oder Smartphone) mit Ihrem Heim-WLAN-Netzwerk verbunden ist.
+#. Stellen Sie sicher, dass Ihr mobiles Gerät (Tablet oder Smartphone) mit Ihrem Heim-WLAN verbunden ist.
 
    .. image:: img/faq_connect_wifi.jpg
         :width: 400
         :align: center
 
-#. Öffnen Sie die SunFounder Controller App, tippen Sie auf das "+"-Symbol, um einen neuen Controller zu erstellen, wählen Sie die "GalaxyRVR"-Voreinstellung, geben Sie einen Namen ein oder tippen Sie auf "Bestätigen", um fortzufahren.
+#. Öffnen Sie die **SunFounder Controller App**, tippen Sie auf das "+"-Symbol, erstellen Sie einen neuen Controller, wählen Sie die Voreinstellung **"GalaxyRVR"**, geben Sie einen Namen ein oder tippen Sie auf **"Bestätigen"**, um fortzufahren.
 
    .. image:: img/app/play_preset.jpg
         :width: 600
 
-#. Die App sucht automatisch nach dem GalaxyRVR. Nach kurzer Zeit sehen Sie eine Meldung "Erfolgreich verbunden".
+#. Die App sucht automatisch nach dem **GalaxyRVR**. Nach kurzer Zeit erscheint die Meldung **"Erfolgreich verbunden"**.
 
    .. image:: img/app/auto_connect.jpg
         :width: 600
-
-#. Tippen Sie nun auf die Schaltfläche |app_run|, um den Live-Video-Feed von der Kamera anzuzeigen und den Rover mit den bereitgestellten Widgets zu steuern.
+    
+#. Jetzt können Sie die **|app_run|**-Schaltfläche drücken, um den **Live-Videostream** der Kamera anzuzeigen und den Rover über die verfügbaren Steuerelemente zu bedienen.
 
    .. image:: img/app/play_run_view.jpg
         :width: 600 
+
+
+**Zurücksetzen des AP-Modus**  
+
+#. Um den **AP-Modus zurückzusetzen** und den **SSID-Namen** sowie das **Passwort** zu ändern, stellen Sie sicher, dass die **AP-Modus-Zeilen aktiviert** sind und aktualisieren Sie die Werte für **SSID** und **Passwort**.
+
+   .. code-block:: c
+
+      #define WIFI_MODE WIFI_MODE_AP 
+      #define SSID "newSSIDName" 
+      #define PASSWORD "newPassword"
+
+      // #define WIFI_MODE WIFI_MODE_STA
+      // #define SSID "xxxxxxxxxx"
+      // #define PASSWORD "xxxxxxxxxx"
+
+#. Folgen Sie den gleichen **Code-Upload-Schritten**, die oben beschrieben wurden.
+
+#. Nach dem Hochladen sendet der GalaxyRVR sein **eigenes Netzwerk** mit dem neuen Namen und Passwort, sodass Sie sich **direkt verbinden können**, ohne ein Heim-WLAN zu benötigen.
 
 Wie dreht man die Kamera um?
 -----------------------------
