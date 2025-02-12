@@ -161,41 +161,51 @@ ESP32 CAMのファームウェアを更新するための詳細な手順は以�
 
 .. _ap_to_sta:
 
-ホーム WiFi を使用してローバーを制御する方法は？
--------------------------------------------------
-デフォルトでは、Uno R3 には APP モードで構成されたコードがプリロードされています。このため、GalaxyRVR はホットスポットをブロードキャストし、SunFounder Controller APP を介してモバイルデバイスで制御できます。
 
-ホーム WiFi を使用してローバーを制御したい場合は、以下の手順で Uno ボードに修正済みのコードをアップロードしてください：
 
-#. 以下のリンクから必要なファイルをダウンロードします：
+ローバーのネットワーク設定: ホームWiFiとAPモード
+------------------------------------------------------------------------------------------
 
-   * :download:`GalaxyRVR Codes <https://github.com/sunfounder/galaxy-rvr/archive/refs/heads/main.zip>`
+Uno R3 はデフォルトで **APモード** に設定されたコードがプリインストールされています。つまり、**GalaxyRVR** はホットスポットをブロードキャストし、モバイルデバイスを接続して **SunFounder Controller APP** で制御できるようになります。
 
-#. インストールガイドを参照してください：:ref:`install_arduino_ide`.
+ローバーを自宅のWiFiで制御したい場合や、複数のデバイスでSSIDが重複するのを避けるために**APモードをリセット**する必要がある場合は、以下の手順に従って、修正したコードをUnoボードにアップロードしてください。
 
-#. **ライブラリマネージャー** を使用して、 ``SoftPWM`` および ``SunFounder AI Camera`` ライブラリをインストールします。詳細な手順は :ref:`install_lib` を参照してください。
+#. 以下のリンクから必要なファイルをダウンロードしてください。
 
-#. ``galaxy-rvr-main\galaxy-rvr`` ディレクトリに移動し、 ``galaxy-rvr.ino`` ファイルを開きます。
+   * :download:`GalaxyRVR コード <https://github.com/sunfounder/galaxy-rvr/archive/refs/heads/main.zip>`
+
+#. インストールガイドを参照してください: :ref:`install_arduino_ide`。
+
+#. **ライブラリマネージャー** を使用して、``SoftPWM`` および ``SunFounder AI Camera`` ライブラリをインストールしてください。詳しい手順は :ref:`install_lib` を参照してください。
+
+#. ``galaxy-rvr-main\galaxy-rvr`` ディレクトリに移動し、``galaxy-rvr.ino`` ファイルを開きます。
 
    .. image:: img/faq_galaxy_code.png
-      :width: 400
 
-#. 行 69-71 をコメントアウトし、行 73-75 をコメント解除して、 ``SSID`` と ``PASSWORD`` をホーム WiFi の認証情報に置き換えます。
+#. **69〜71行をコメントアウトし、73〜75行のコメントを解除して、WiFiのSSIDとPASSWORDを自宅のものに変更してください。**
 
-   .. image:: img/ap_sta.png
-      :align: center
+   .. code-block:: c
 
-#. GalaxyRVR とコンピューターを USB ケーブルで接続し、ローバーの **upload** スイッチをアップロード端に切り替えます。
+      // /** WiFiモード、SSID、パスワードを設定 */
+      // #define WIFI_MODE WIFI_MODE_AP
+      // #define SSID "GalaxyRVR"
+      // #define PASSWORD "12345678"
+
+      #define WIFI_MODE WIFI_MODE_STA
+      #define SSID "xxxxxxxxxx"
+      #define PASSWORD "xxxxxxxxxx"
+
+#. **GalaxyRVRをUSBケーブルでパソコンに接続し、ローバーの「アップロード」スイッチをアップロード側に切り替えます。**
 
    .. image:: img/camera_upload.png
         :width: 400
         :align: center
 
-#. Arduino IDE の **Upload** ボタンをクリックして、修正済みのコードを Uno ボードにアップロードします。
+#. Arduino IDEで **「Upload」ボタン** をクリックし、修正したコードをUnoボードにアップロードします。
 
    .. image:: img/faq_galaxy_upload.png
 
-#. ESP32 CAM を有効化するには、モードスイッチを **Run** 位置に移動し、 **reset** ボタンを押して R3 ボードを再起動します。底部ストリップでシアンの光が点滅するのが見えます。
+#. **ESP32 CAMを有効化するため、モードスイッチを「Run」位置に移動し、R3ボードのリセットボタンを押して再起動します。** すると、ローバー底部のLEDストリップに **シアンの点滅ライト** が表示されます。
 
    .. raw:: html
    
@@ -204,26 +214,46 @@ ESP32 CAMのファームウェアを更新するための詳細な手順は以�
            Your browser does not support the video tag.
        </video>
 
-#. モバイルデバイス（タブレットやスマートフォン）がホーム WiFi ネットワークに接続されていることを確認してください。
+#. **モバイルデバイス（スマートフォンやタブレット）が自宅のWiFiネットワークに接続されていることを確認してください。**
 
    .. image:: img/faq_connect_wifi.jpg
         :width: 400
         :align: center
 
-#. SunFounder Controller App を開き、「+」アイコンをタップして新しいコントローラーを作成し、「GalaxyRVR」プリセットを選択し、名前を入力するか「Confirm」をタップして続行します。
+#. **SunFounder Controller App** を開き、"+" アイコンをタップして新しいコントローラーを作成し、"GalaxyRVR" プリセットを選択、名前を入力するか **「確認」ボタン** を押して続行します。
 
    .. image:: img/app/play_preset.jpg
         :width: 600
 
-#. アプリが自動的に GalaxyRVR を検索します。しばらくすると、「Connected Successfully」というプロンプトが表示されます。
+#. **アプリが自動的にGalaxyRVRを検索します。数秒後に「接続成功」のメッセージが表示されます。**
 
    .. image:: img/app/auto_connect.jpg
         :width: 600
     
-#. 次に、|app_run| ボタンをタップすると、カメラのライブビデオフィードを表示し、提供されたウィジェットを使用してローバーを制御できます。
+#. **|app_run| ボタンをタップすると、カメラのライブ映像を表示し、提供されたウィジェットを使ってローバーを制御できます。**
 
    .. image:: img/app/play_run_view.jpg
         :width: 600 
+
+
+**APモードのリセット**  
+
+#. **APモードをリセットしてSSIDとPASSWORDを変更するには、APモードのコードを有効にし、新しいSSIDとPASSWORDを設定してください。**
+
+   .. code-block:: c
+
+      #define WIFI_MODE WIFI_MODE_AP 
+      #define SSID "newSSIDName" 
+      #define PASSWORD "newPassword"
+
+      // #define WIFI_MODE WIFI_MODE_STA
+      // #define SSID "xxxxxxxxxx"
+      // #define PASSWORD "xxxxxxxxxx"
+
+#. 上記と同じ **コードアップロードの手順** に従ってください。
+
+#. アップロードが完了すると、**GalaxyRVRは新しいSSIDとパスワードでネットワークをブロードキャスト**し、自宅のWiFiを経由せずに **直接接続** できるようになります。
+
 
 カメラを反転する方法は？
 ---------------------------
