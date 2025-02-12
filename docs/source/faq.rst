@@ -162,11 +162,12 @@ By default, the GalaxyRVR's Uno R3 board comes preloaded with the necessary firm
 
 .. _ap_to_sta:
 
-How to Control the Rover Using Your Home WiFi?
--------------------------------------------------
-By default, the Uno R3 is preloaded with code configured in APP mode. This means the GalaxyRVR will broadcast a hotspot, allowing you to connect your mobile device to control it via the SunFounder Controller APP.
+Rover Network Configuration: Home WiFi and AP Mode
+-----------------------------------------------------
 
-If you prefer to control the rover using your home WiFi, follow these steps to upload the modified code to the Uno board:
+By default, the Uno R3 is preloaded with code configured in AP mode. This means the GalaxyRVR will broadcast a hotspot, allowing you to connect your mobile device to control it via the SunFounder Controller APP.
+
+If you prefer to control the rover using your home WiFi, or need to reset to AP mode for different use cases, follow these steps to upload the modified code to the Uno board:
 
 #. Download the required files from the following link: 
 
@@ -182,8 +183,16 @@ If you prefer to control the rover using your home WiFi, follow these steps to u
 
 #. Comment out lines 69-71, uncomment lines 73-75, replace ``SSID`` and ``PASSWORD`` with your home WiFi credentials.
 
-   .. image:: img/ap_sta.png
-      :align: center
+   .. code-block:: c
+
+      // /** Configure Wifi mode, SSID, password*/
+      // #define WIFI_MODE WIFI_MODE_AP
+      // #define SSID "GalaxyRVR"
+      // #define PASSWORD "12345678"
+
+      #define WIFI_MODE WIFI_MODE_STA
+      #define SSID "xxxxxxxxxx"
+      #define PASSWORD "xxxxxxxxxx"
 
 #. Connect the GalaxyRVR and computer with a USB cable, and then turn the **upload** switch of the rover to the upload end.
 
@@ -224,7 +233,27 @@ If you prefer to control the rover using your home WiFi, follow these steps to u
 
    .. image:: img/app/play_run_view.jpg
         :width: 600 
-    
+
+
+**Resetting AP Mode**
+
+#. To reset to AP mode and change the SSID and PASSWORD, make sure the AP mode lines are enabled and update the SSID and PASSWORD to the new values. 
+
+   .. code-block:: c
+
+      #define WIFI_MODE WIFI_MODE_AP 
+      #define SSID "newSSIDName" 
+      #define PASSWORD "newPassword"
+
+      // #define WIFI_MODE WIFI_MODE_STA
+      // #define SSID "xxxxxxxxxx"
+      // #define PASSWORD "xxxxxxxxxx"
+
+#. Follow the same steps for uploading the code as detailed above.
+
+#. Once uploaded, the GalaxyRVR will broadcast its network with the new network name and password, allowing direct connections without a home WiFi network.
+
+
 How to Invert the Camera?  
 ---------------------------
 
