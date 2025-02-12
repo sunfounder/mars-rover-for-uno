@@ -162,33 +162,39 @@ Par défaut, la carte Uno R3 du GalaxyRVR est préchargée avec le firmware néc
 
 .. _ap_to_sta:
 
-Comment contrôler le rover via votre WiFi domestique ?
-------------------------------------------------------------------
+Configuration du Réseau du Rover : WiFi Domestique et Mode AP
+--------------------------------------------------------------------------------------
 
+Par défaut, l'Uno R3 est préchargé avec un code configuré en mode AP. Cela signifie que le GalaxyRVR diffusera un hotspot, vous permettant de connecter votre appareil mobile et de le contrôler via l'application **SunFounder Controller APP**.
 
-Par défaut, la Uno R3 est préchargée avec un code configuré en mode APP. Cela signifie que le GalaxyRVR émettra un hotspot, vous permettant de connecter votre appareil mobile pour le contrôler via l'application SunFounder Controller.
+Si vous préférez contrôler le rover via votre WiFi domestique ou devez réinitialiser le mode AP pour différents cas d'utilisation, suivez ces étapes pour télécharger le code modifié sur la carte Uno :
 
-Si vous préférez contrôler le rover via votre WiFi domestique, suivez ces étapes pour télécharger le code modifié sur la carte Uno :
+#. Téléchargez les fichiers requis à partir du lien suivant :
 
-#. Téléchargez les fichiers requis depuis le lien suivant : 
-
-   * :download:`GalaxyRVR Codes <https://github.com/sunfounder/galaxy-rvr/archive/refs/heads/main.zip>`
+   * :download:`Codes GalaxyRVR <https://github.com/sunfounder/galaxy-rvr/archive/refs/heads/main.zip>`
 
 #. Référez-vous au guide d'installation : :ref:`install_arduino_ide`.
 
-#. Utilisez le **Gestionnaire de Bibliothèques** pour installer les bibliothèques ``SoftPWM`` et ``SunFounder AI Camera``. Pour les étapes détaillées, consultez :ref:`install_lib`.
+#. Utilisez le **Gestionnaire de Bibliothèques** pour installer les bibliothèques ``SoftPWM`` et ``SunFounder AI Camera``. Pour des étapes détaillées, voir :ref:`install_lib`.
 
 #. Accédez au répertoire ``galaxy-rvr-main\galaxy-rvr`` et ouvrez le fichier ``galaxy-rvr.ino``.
 
    .. image:: img/faq_galaxy_code.png
-      :width: 400
 
-#. Commentez les lignes 69-71, décommentez les lignes 73-75, remplacez ``SSID`` et ``PASSWORD`` par vos identifiants WiFi domestiques.
+#. Commentez les lignes 69-71, décommentez les lignes 73-75 et remplacez ``SSID`` et ``PASSWORD`` par vos identifiants WiFi domestiques.
 
-   .. image:: img/ap_sta.png
-      :align: center
+   .. code-block:: c
 
-#. Connectez le GalaxyRVR et l'ordinateur avec un câble USB, puis mettez l'interrupteur **upload** du rover en position "upload".
+      // /** Configurer le mode Wifi, SSID, mot de passe */
+      // #define WIFI_MODE WIFI_MODE_AP
+      // #define SSID "GalaxyRVR"
+      // #define PASSWORD "12345678"
+
+      #define WIFI_MODE WIFI_MODE_STA
+      #define SSID "xxxxxxxxxx"
+      #define PASSWORD "xxxxxxxxxx"
+
+#. Connectez le GalaxyRVR à l’ordinateur avec un câble USB, puis mettez l’interrupteur **upload** du rover en mode téléchargement.
 
    .. image:: img/camera_upload.png
         :width: 400
@@ -198,7 +204,7 @@ Si vous préférez contrôler le rover via votre WiFi domestique, suivez ces ét
 
    .. image:: img/faq_galaxy_upload.png
 
-#. Pour activer l'ESP32 CAM, mettez l'interrupteur de mode en position **Run** et appuyez sur le bouton **reset** pour redémarrer la carte R3. Vous observerez alors une lumière cyan clignotant sur la bande inférieure.
+#. Pour activer l'ESP32 CAM, déplacez l'interrupteur de mode en position **Run**, puis appuyez sur le bouton **reset** pour redémarrer la carte R3. Vous verrez alors une lumière cyan clignoter sur la bande inférieure.
 
    .. raw:: html
    
@@ -213,20 +219,39 @@ Si vous préférez contrôler le rover via votre WiFi domestique, suivez ces ét
         :width: 400
         :align: center
 
-#. Ouvrez l'application SunFounder Controller, appuyez sur l'icône "+" pour créer un nouveau contrôleur, sélectionnez le préréglage "GalaxyRVR", entrez un nom ou appuyez sur "Confirmer" pour continuer.
+#. Ouvrez l'application **SunFounder Controller**, appuyez sur l'icône "+", créez un nouveau contrôleur, sélectionnez le préréglage "GalaxyRVR", entrez un nom ou appuyez sur "Confirmer" pour continuer.
 
    .. image:: img/app/play_preset.jpg
         :width: 600
 
-#. L'application recherchera automatiquement le GalaxyRVR. Après un moment, vous verrez une invite indiquant "Connecté avec succès."
+#. L'application recherchera automatiquement le GalaxyRVR. Après un instant, un message "Connexion réussie" apparaîtra.
 
    .. image:: img/app/auto_connect.jpg
         :width: 600
     
-#. Maintenant, appuyez sur le bouton |app_run| pour visualiser le flux vidéo en direct de la caméra et contrôler le rover à l'aide des widgets fournis.
+#. Maintenant, appuyez sur le bouton |app_run| pour afficher le flux vidéo en direct de la caméra et contrôler le rover à l'aide des widgets fournis.
 
    .. image:: img/app/play_run_view.jpg
         :width: 600 
+
+
+**Réinitialisation du Mode AP**  
+
+#. Pour réinitialiser le mode AP et modifier le **SSID** et le **mot de passe**, assurez-vous que les lignes du mode AP sont activées et mettez à jour les valeurs du **SSID** et du **mot de passe**.
+
+   .. code-block:: c
+
+      #define WIFI_MODE WIFI_MODE_AP 
+      #define SSID "newSSIDName" 
+      #define PASSWORD "newPassword"
+
+      // #define WIFI_MODE WIFI_MODE_STA
+      // #define SSID "xxxxxxxxxx"
+      // #define PASSWORD "xxxxxxxxxx"
+
+#. Suivez les mêmes étapes de téléchargement du code détaillées ci-dessus.
+
+#. Une fois le code téléchargé, le GalaxyRVR diffusera son réseau avec le nouveau nom et mot de passe, permettant des connexions directes sans passer par un réseau WiFi domestique.
     
 Comment inverser la caméra ?  
 ----------------------------------------
